@@ -29,16 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ldap = new Ldap($opcions);
     $ldap->bind();
     
-    // Base de recerca: especifiquem la unitat organitzativa
     $baseDnOu = "ou={$ou},$domini";
-    // Filtre que recupera només les entrades que tenen tant inetOrgPerson com posixAccount
     $filter = '(& (objectClass=inetOrgPerson) (objectClass=posixAccount))';
     
     try {
-        // Es realitza la cerca en tot l'arbre sota la OU especificada
         $results = $ldap->search($filter, $baseDnOu, Ldap::SEARCH_SCOPE_SUB);
         
-        // Convertir resultats a array
         foreach ($results as $entry) {
             $usuarios[] = $entry;
         }
